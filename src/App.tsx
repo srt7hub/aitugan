@@ -374,13 +374,6 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <span className="text-gray-400 text-sm">{current + 1} / {total}</span>
-          <button
-            onClick={onClose}
-            className="w-11 h-11 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center transition-colors text-white border border-white/30"
-            aria-label="Закрыть"
-          >
-            <X size={22} />
-          </button>
         </div>
       </div>
 
@@ -396,6 +389,14 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
           className="w-full h-full object-contain"
           draggable={false}
         />
+        {/* Floating close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors border border-white/20 z-10"
+          aria-label="Закрыть"
+        >
+          <X size={22} />
+        </button>
         {total > 1 && (
           <>
             <button onClick={() => setCurrent(c => (c - 1 + total) % total)} className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors">
