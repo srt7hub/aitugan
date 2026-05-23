@@ -92,9 +92,9 @@ const Navbar = () => {
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md py-4 shadow-sm border-b border-gray-200' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between">
-        <div className={`text-2xl font-display font-bold tracking-tight ${scrolled ? 'text-gray-900' : 'text-white'}`}>
+        <a href="#" className={`text-2xl font-display font-bold tracking-tight ${scrolled ? 'text-gray-900' : 'text-white'}`}>
           КОСМОС
-        </div>
+        </a>
         
         <div className={`hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide uppercase ${scrolled ? 'text-gray-600' : 'text-gray-300'}`}>
           <a href="#about" className={`transition-colors ${scrolled ? 'hover:text-black' : 'hover:text-white'}`}>О компании</a>
@@ -331,6 +331,7 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
   const [current, setCurrent] = useState(0);
   const photos: string[] = product.photos || [];
   const total = photos.length;
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -338,60 +339,92 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
       if (e.key === 'ArrowRight') setCurrent(c => (c + 1) % total);
       if (e.key === 'ArrowLeft') setCurrent(c => (c - 1 + total) % total);
     };
+    const onHash = () => onClose();
     window.addEventListener('keydown', onKey);
+    window.addEventListener('hashchange', onHash);
     document.body.style.overflow = 'hidden';
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('hashchange', onHash);
+      document.body.style.overflow = '';
+    };
   }, [onClose, total]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) setCurrent(c => (c + 1) % total);
+      else setCurrent(c => (c - 1 + total) % total);
+    }
+    touchStartX.current = null;
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
-      <div className="relative z-10 w-full max-w-4xl bg-[#0a0f1c] rounded-2xl overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-          <div>
-            <h3 className="text-white font-bold text-lg">{product.title}</h3>
-            {product.price && <span className="text-blue-400 text-sm font-semibold">{product.price}</span>}
-          </div>
-          <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors text-white">
-            <X size={18} />
+    <div className="fixed inset-0 z-[100] bg-black flex flex-col" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      {/* Header */}
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 bg-black border-b border-white/10">
+        <div className="flex-1 min-w-0 mr-3">
+          <h3 className="text-white font-bold text-base leading-tight truncate">{product.title}</h3>
+          {product.price && <span className="text-blue-400 text-sm font-semibold">{product.price}</span>}
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="text-gray-400 text-sm">{current + 1} / {total}</span>
+          <button
+            onClick={onClose}
+            className="w-11 h-11 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center transition-colors text-white border border-white/30"
+            aria-label="Закрыть"
+          >
+            <X size={22} />
           </button>
         </div>
+      </div>
 
-        {/* Main image */}
-        <div className="relative aspect-[16/10] bg-black">
-          <img src={photos[current]} alt={`${product.title} ${current + 1}`} className="w-full h-full object-contain" />
-          {total > 1 && (
-            <>
-              <button onClick={() => setCurrent(c => (c - 1 + total) % total)} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white transition-colors">
-                <ChevronRight size={20} className="rotate-180" />
-              </button>
-              <button onClick={() => setCurrent(c => (c + 1) % total)} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 flex items-center justify-center text-white transition-colors">
-                <ChevronRight size={20} />
-              </button>
-            </>
-          )}
-          <div className="absolute bottom-3 right-4 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
-            {current + 1} / {total}
-          </div>
-        </div>
+      {/* Main image — fills all available space, swipeable */}
+      <div
+        className="relative flex-1 min-h-0 bg-black select-none"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <img
+          src={photos[current]}
+          alt={`${product.title} ${current + 1}`}
+          className="w-full h-full object-contain"
+          draggable={false}
+        />
+        {total > 1 && (
+          <>
+            <button onClick={() => setCurrent(c => (c - 1 + total) % total)} className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors">
+              <ChevronRight size={24} className="rotate-180" />
+            </button>
+            <button onClick={() => setCurrent(c => (c + 1) % total)} className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors">
+              <ChevronRight size={24} />
+            </button>
+          </>
+        )}
+      </div>
 
+      {/* Bottom panel */}
+      <div className="flex-shrink-0 bg-black/90 backdrop-blur-sm border-t border-white/10">
         {/* Thumbnails */}
         {total > 1 && (
-          <div className="flex gap-2 p-4 overflow-x-auto">
+          <div className="flex gap-2 px-4 pt-3 overflow-x-auto">
             {photos.map((src, i) => (
-              <button key={i} onClick={() => setCurrent(i)} className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-colors ${i === current ? 'border-blue-500' : 'border-transparent opacity-50 hover:opacity-80'}`}>
+              <button key={i} onClick={() => setCurrent(i)} className={`flex-shrink-0 w-14 h-10 rounded-lg overflow-hidden border-2 transition-all ${i === current ? 'border-blue-500 opacity-100' : 'border-transparent opacity-40 hover:opacity-70'}`}>
                 <img src={src} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
         )}
-
         {/* Description + CTA */}
-        <div className="flex items-center justify-between px-6 py-5 border-t border-white/10 gap-4">
-          <p className="text-gray-400 text-sm leading-relaxed flex-1">{product.desc}</p>
-          <a href="#contact" onClick={onClose} className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-colors">
-            Оставить заявку <ArrowRight size={16} />
+        <div className="flex items-center justify-between px-4 py-3 gap-4">
+          <p className="text-gray-400 text-sm leading-relaxed flex-1 line-clamp-2">{product.desc}</p>
+          <a href="#contact" onClick={onClose} className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-colors">
+            Оставить заявку <ArrowRight size={15} />
           </a>
         </div>
       </div>
@@ -411,7 +444,8 @@ const ProductCard: React.FC<{ product: any, index: number }> = ({ product, index
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6, delay: index * 0.1 }}
-        className="group relative flex flex-col h-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500"
+        onClick={() => setOpen(true)}
+        className="group relative flex flex-col h-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
       >
         <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
           <div className="absolute inset-0 bg-gray-900/10 group-hover:bg-gray-900/0 transition-colors duration-500 z-10 pointer-events-none" />
@@ -440,12 +474,12 @@ const ProductCard: React.FC<{ product: any, index: number }> = ({ product, index
             {product.desc}
           </p>
 
-          <button onClick={() => setOpen(true)} className="mt-auto inline-flex items-center text-sm font-bold uppercase tracking-widest text-blue-600 group/btn">
+          <div className="mt-auto inline-flex items-center text-sm font-bold uppercase tracking-widest text-blue-600 group/btn">
             <span className="mr-3 text-gray-900 group-hover:text-blue-600 transition-colors">Подробнее</span>
             <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center group-hover/btn:bg-blue-600 group-hover/btn:text-white transition-colors duration-300 border border-blue-100 group-hover/btn:border-transparent">
               <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
             </div>
-          </button>
+          </div>
         </div>
       </motion.div>
     </>
