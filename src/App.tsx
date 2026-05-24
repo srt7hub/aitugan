@@ -25,39 +25,152 @@ const makePhotos = (folder: string, count: number) =>
   Array.from({ length: count }, (_, i) => `/photos/${folder}/${i + 1}.jpeg`);
 
 const serialProducts = [
-  { id: 'p1', title: 'Платформы одноосные', price: 'от 43 000 ₽', photos: makePhotos('1osn', 6), cover: '/1os.jpg', desc: 'Базовые одноосные платформы для перевозки легких грузов.',
+  {
+    id: 'p1', title: 'Платформы одноосные', price: 'от 43 000 ₽',
+    photos: makePhotos('1osn', 6), cover: '/1os.jpg',
+    desc: 'Базовые одноосные платформы для перевозки легких грузов. Цены указаны без колёс. Доплата за 1 колесо — 5 200 ₽.',
+    note: 'Ступицы 4×98 (R13, R14). По запросу: 5×139.7 (Нива, R15, R16).',
+    included: ['Документы для ГИБДД', 'Окрашенная рама', 'Рессоры', 'Ось', 'Амортизаторы', 'Ступицы', 'Полная электрика', 'Крылья', 'Замок фаркопа', 'Задние фары', 'Светоотражатели'],
     sizes: [
-      { size: '2×1.3', price: '43 000 ₽' },
+      { size: '2.0×1.3', price: '43 000 ₽' },
       { size: '2.5×1.3', price: '46 000 ₽' },
       { size: '2.5×1.5', price: '47 000 ₽' },
-      { size: '3×1.5', price: '57 000 ₽' },
+      { size: '3.0×1.5', price: '57 000 ₽' },
       { size: '3.5×1.5', price: '58 000 ₽' },
-      { size: '4×1.5', price: '68 000 ₽' },
-    ]
+      { size: '4.0×1.5', price: '68 000 ₽' },
+    ],
   },
-  { id: 'p2', title: 'Платформы двухосные', price: 'от 58 000 ₽', photos: makePhotos('2osn', 5), cover: '/2os.jpg', desc: 'Усиленные двухосные платформы для тяжелых и габаритных грузов.',
+  {
+    id: 'p2', title: 'Платформы двухосные', price: 'от 58 000 ₽',
+    photos: makePhotos('2osn', 5), cover: '/2os.jpg',
+    desc: 'Усиленные двухосные платформы для тяжелых и габаритных грузов. Цены указаны без колёс. Доплата за 1 колесо — 5 200 ₽.',
+    note: 'Ступицы 4×98 (R13, R14). По запросу: 5×139.7 (Нива, R15, R16).',
+    included: ['Документы для ГИБДД', 'Окрашенная рама', 'Рессоры', 'Ось', 'Амортизаторы', 'Ступицы', 'Полная электрика', 'Крылья', 'Замок фаркопа', 'Задние фары', 'Светоотражатели'],
     sizes: [
-      { size: '2×1.3', price: '58 000 ₽' },
+      { size: '2.0×1.3', price: '58 000 ₽' },
       { size: '2.5×1.3', price: '61 000 ₽' },
       { size: '2.5×1.5', price: '62 000 ₽' },
-      { size: '3×1.5', price: '71 000 ₽' },
+      { size: '3.0×1.5', price: '71 000 ₽' },
       { size: '3.5×1.5', price: '72 000 ₽' },
-      { size: '4×1.5', price: '80 000 ₽' },
-    ]
+      { size: '4.0×1.5', price: '80 000 ₽' },
+    ],
   },
-  { id: 'p3', title: 'Одноосный прицеп с бортом', price: 'от 55 000 ₽', photos: makePhotos('1osnBEZ', 6), cover: '/photos/1osnBEZ/3.jpeg', desc: 'Одноосный прицеп с металлическими бортами без тента.' },
-  { id: 'p4', title: 'Двухосный прицеп с бортом', price: 'от 70 000 ₽', photos: makePhotos('2osnBEZ', 7), desc: 'Двухосный прицеп с бортами без тента — для крупных грузов.' },
-  { id: 'p5', title: 'Одноосный прицеп с тентом', price: 'от 65 000 ₽', photos: makePhotos('1osnTENT', 7), desc: 'Одноосный прицеп с тентом для защиты груза от непогоды.' },
-  { id: 'p6', title: 'Двухосный прицеп с тентом', price: 'от 90 000 ₽', photos: makePhotos('2osnTENT', 5), desc: 'Двухосный тентованный прицеп для объемных и чувствительных грузов.' },
-  { id: 'p7', title: 'Платформа с подрамником', price: 'от 120 000 ₽', photos: makePhotos('2osnPODRAMNIK', 7), desc: 'Усиленная двухосная платформа с подрамником — для пчеловозов, автовозов и спецтехники.' },
-  { id: 'p8', title: 'Длинномер 5×2', price: 'от 150 000 ₽', photos: makePhotos('dlina5x2', 7), desc: 'Прицеп-длинномер 5×2 м, усиленный с подрамником для крупногабаритных грузов.' },
-  { id: 'p9', title: 'Фургон двухосный', price: 'от 200 000 ₽', photos: makePhotos('furgon', 10), desc: 'Закрытый двухосный фургон для безопасной перевозки ценных грузов.' },
-  { id: 'p10', title: 'Прицеп-коневоз', price: 'от 160 000 ₽', photos: makePhotos('kovnevos', 7), desc: 'Специализированный прицеп для безопасной перевозки лошадей.',
+  {
+    id: 'p3', title: 'Одноосный прицеп с бортом', price: 'от 53 000 ₽',
+    photos: makePhotos('1osnBEZ', 6), cover: '/photos/1osnBEZ/3.jpeg',
+    desc: 'Одноосный прицеп с металлическими бортами без тента. Передний и задний борт открываются.',
+    included: ['Документы для ГИБДД', 'Окрашенная рама', 'Борта', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Крылья', 'Замок фаркопа', 'Задние фары'],
+    sizes: [
+      { size: '2.0×1.3', price: '53 000 ₽' },
+      { size: '2.5×1.3', price: '61 000 ₽' },
+      { size: '2.5×1.5', price: '63 000 ₽' },
+      { size: '3.0×1.5', price: '74 000 ₽' },
+      { size: '3.5×1.5', price: '77 000 ₽' },
+      { size: '4.0×1.5', price: '85 000 ₽' },
+    ],
+  },
+  {
+    id: 'p4', title: 'Двухосный прицеп с бортом', price: 'от 58 000 ₽',
+    photos: makePhotos('2osnBEZ', 7),
+    desc: 'Двухосный прицеп с металлическими бортами без тента — для крупных грузов.',
+    included: ['Документы для ГИБДД', 'Окрашенная рама', 'Борта', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Крылья', 'Замок фаркопа', 'Задние фары'],
+    sizes: [
+      { size: '2.0×1.3', price: '58 000 ₽' },
+      { size: '2.5×1.3', price: '74 000 ₽' },
+      { size: '2.5×1.5', price: '77 000 ₽' },
+      { size: '3.0×1.5', price: '88 000 ₽' },
+      { size: '3.5×1.5', price: '90 000 ₽' },
+      { size: '4.0×1.5', price: '100 000 ₽' },
+    ],
+  },
+  {
+    id: 'p5', title: 'Одноосный прицеп с тентом', price: 'от 69 000 ₽',
+    photos: makePhotos('1osnTENT', 7),
+    desc: 'Одноосный прицеп с бортами и тентом для защиты груза от непогоды. Передний и задний борт открываются.',
+    included: ['Документы для ГИБДД', 'Окрашенная рама', 'Борта', 'Тент', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Крылья', 'Замок фаркопа', 'Задние фары'],
+    sizes: [
+      { size: '2.0×1.3', price: '69 000 ₽' },
+      { size: '2.5×1.3', price: '77 000 ₽' },
+      { size: '2.5×1.5', price: '80 000 ₽' },
+      { size: '3.0×1.5', price: '93 000 ₽' },
+      { size: '3.5×1.5', price: '96 000 ₽' },
+      { size: '4.0×1.5', price: '114 000 ₽' },
+    ],
+  },
+  {
+    id: 'p6', title: 'Двухосный прицеп с тентом', price: 'от 85 000 ₽',
+    photos: makePhotos('2osnTENT', 5),
+    desc: 'Двухосный прицеп с бортами и тентом для объемных и чувствительных грузов.',
+    included: ['Документы для ГИБДД', 'Окрашенная рама', 'Борта', 'Тент', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Крылья', 'Замок фаркопа', 'Задние фары'],
+    sizes: [
+      { size: '2.0×1.3', price: '85 000 ₽' },
+      { size: '2.5×1.3', price: '92 000 ₽' },
+      { size: '2.5×1.5', price: '95 000 ₽' },
+      { size: '3.0×1.5', price: '108 000 ₽' },
+      { size: '3.5×1.5', price: '112 000 ₽' },
+      { size: '4.0×1.5', price: '130 000 ₽' },
+    ],
+  },
+  {
+    id: 'p7', title: 'Платформа с подрамником', price: 'от 92 000 ₽',
+    photos: makePhotos('2osnPODRAMNIK', 7),
+    desc: 'Усиленная двухосная платформа с подрамником для пчеловозов, каракатов, автовозов и спецтехники.',
+    included: ['Документы для ГИБДД', 'Усиленная рама с подрамником', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Крылья', 'Замок фаркопа', 'Задние фары'],
+    sizes: [
+      { size: '3.0×2.0', price: '92 000 ₽' },
+      { size: '3.5×2.0', price: '96 000 ₽' },
+      { size: '4.0×2.0', price: '99 000 ₽' },
+      { size: '4.5×2.0', price: '102 000 ₽' },
+      { size: '5.0×2.0', price: '106 000 ₽' },
+      { size: '6.0×2.0', price: '117 000 ₽' },
+      { size: '7.0×2.0', price: '145 000 ₽' },
+      { size: '8.0×2.0', price: '183 000 ₽' },
+      { size: '8.5×2.0', price: '206 000 ₽' },
+    ],
+  },
+  {
+    id: 'p8', title: 'Длинномер 5×2', price: 'от 106 000 ₽',
+    photos: makePhotos('dlina5x2', 7),
+    desc: 'Прицеп-длинномер, двухосный с усиленной рамой и подрамником. Для пчеловозов, каракатов и крупногабаритных грузов.',
+    included: ['Документы для ГИБДД', 'Усиленная рама с подрамником', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Крылья', 'Замок фаркопа', 'Задние фары'],
+    sizes: [
+      { size: '3.0×2.0', price: '120 000 ₽' },
+      { size: '3.5×2.0', price: '125 000 ₽' },
+      { size: '4.0×2.0', price: '134 000 ₽' },
+      { size: '4.5×2.0', price: '147 000 ₽' },
+      { size: '5.0×2.0', price: '155 000 ₽' },
+      { size: '6.0×2.0', price: '178 000 ₽' },
+      { size: '7.0×2.0', price: '210 000 ₽' },
+      { size: '8.0×2.0', price: '254 000 ₽' },
+      { size: '8.5×2.0', price: '276 000 ₽' },
+    ],
+  },
+  {
+    id: 'p9', title: 'Фургон двухосный', price: 'от 200 000 ₽',
+    photos: makePhotos('furgon', 10),
+    desc: 'Закрытый двухосный фургон для безопасной перевозки ценных грузов. Цена уточняется по запросу.',
+    included: ['Документы для ГИБДД', 'Окрашенная рама', 'Кузов фургон', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Замок фаркопа'],
+  },
+  {
+    id: 'p10', title: 'Прицеп-коневоз', price: 'от 160 000 ₽',
+    photos: makePhotos('kovnevos', 7),
+    desc: 'Специализированный прицеп для безопасной перевозки лошадей.',
+    included: ['Документы для ГИБДД', 'Окрашенная рама', 'Кузов', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Замок фаркопа'],
     sizes: [
       { size: '2.4×1.2', price: '160 000 ₽' },
-    ]
+    ],
   },
-  { id: 'p11', title: 'Подкат', price: 'от 85 000 ₽', photos: makePhotos('podkat', 5), desc: 'Подкатная тележка для частичной погрузки и эвакуации автомобиля.' },
+  {
+    id: 'p11', title: 'Подкат', price: 'от 60 000 ₽',
+    photos: makePhotos('podkat', 5),
+    desc: 'Прицеп-подкат для частичной погрузки и эвакуации автомобиля. Категория В. По ПТС: ПРИЦЕП-ЭВАКУАТОР.',
+    note: 'Колёса в комплект не входят. Размерность: 175/70 R13, 175/65 R14. Сверловка 4×98.',
+    included: ['Документы для ГИБДД (ПТС, ДКП)', 'Рама основная', 'Рама поворотная', 'Крылья', 'Аппарели (трапы)', 'Дышло', 'Ступицы', 'Проводка и фонари', 'Сцепной замок', 'Кронштейн для лебёдки'],
+    sizes: [
+      { size: 'Стандарт (до 2000 кг)', price: '60 000 ₽' },
+      { size: 'Усиленный (до 3000 кг)', price: '70 000 ₽' },
+    ],
+  },
 ];
 
 const customDirections = [
@@ -443,25 +556,52 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
             ))}
           </div>
         )}
-        {/* Sizes table */}
-        {product.sizes && (
-          <div className="px-4 pt-3 pb-1">
-            <div className="grid grid-cols-3 gap-x-2 gap-y-1">
-              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider col-span-1">Размер (м)</div>
-              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider col-span-2">Цена</div>
-              {product.sizes.map((row: { size: string; price: string }, i: number) => (
-                <React.Fragment key={i}>
-                  <div className="text-white text-sm font-mono py-1 border-t border-white/5">{row.size}</div>
-                  <div className="text-blue-400 text-sm font-semibold py-1 border-t border-white/5 col-span-2">{row.price}</div>
-                </React.Fragment>
-              ))}
+        {/* Scrollable info block */}
+        <div className="overflow-y-auto max-h-[38vh] px-4 pt-3 pb-1 space-y-4">
+          {/* Description */}
+          <p className="text-gray-400 text-sm leading-relaxed">{product.desc}</p>
+
+          {/* Note */}
+          {product.note && (
+            <p className="text-yellow-400/80 text-xs leading-relaxed">{product.note}</p>
+          )}
+
+          {/* Sizes table */}
+          {product.sizes && (
+            <div>
+              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Размеры и цены</div>
+              <div className="grid grid-cols-2 gap-x-4">
+                <div className="text-gray-600 text-xs pb-1 border-b border-white/5">Размер (м)</div>
+                <div className="text-gray-600 text-xs pb-1 border-b border-white/5">Цена</div>
+                {product.sizes.map((row: { size: string; price: string }, i: number) => (
+                  <React.Fragment key={i}>
+                    <div className="text-white text-sm font-mono py-1.5 border-b border-white/5">{row.size}</div>
+                    <div className="text-blue-400 text-sm font-semibold py-1.5 border-b border-white/5">{row.price}</div>
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-        {/* Description + CTA */}
-        <div className="flex items-center justify-between px-4 py-3 gap-4">
-          <p className="text-gray-400 text-sm leading-relaxed flex-1 line-clamp-2">{product.desc}</p>
-          <a href="#contact" onClick={onClose} className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-colors">
+          )}
+
+          {/* Included */}
+          {product.included && (
+            <div>
+              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Комплектация</div>
+              <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                {product.included.map((item: string, i: number) => (
+                  <div key={i} className="flex items-center gap-1.5 text-gray-300 text-xs">
+                    <div className="w-1 h-1 rounded-full bg-blue-500 flex-shrink-0" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* CTA */}
+        <div className="flex items-center justify-end px-4 py-3 border-t border-white/10">
+          <a href="#contact" onClick={onClose} className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-colors">
             Оставить заявку <ArrowRight size={15} />
           </a>
         </div>
