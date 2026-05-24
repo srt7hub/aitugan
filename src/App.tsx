@@ -25,9 +25,9 @@ const makePhotos = (folder: string, count: number) =>
   Array.from({ length: count }, (_, i) => `/photos/${folder}/${i + 1}.jpeg`);
 
 const serialProducts = [
-  { id: 'p1', title: 'Платформы одноосные', price: 'от 43 000 ₽', photos: makePhotos('1osn', 6), desc: 'Базовые одноосные платформы для перевозки легких грузов.' },
-  { id: 'p2', title: 'Платформы двухосные', price: 'от 75 000 ₽', photos: makePhotos('2osn', 5), desc: 'Усиленные двухосные платформы для тяжелых и габаритных грузов.' },
-  { id: 'p3', title: 'Одноосный прицеп с бортом', price: 'от 55 000 ₽', photos: makePhotos('1osnBEZ', 6), desc: 'Одноосный прицеп с металлическими бортами без тента.' },
+  { id: 'p1', title: 'Платформы одноосные', price: 'от 43 000 ₽', photos: makePhotos('1osn', 6), cover: '/1os.jpg', desc: 'Базовые одноосные платформы для перевозки легких грузов.' },
+  { id: 'p2', title: 'Платформы двухосные', price: 'от 75 000 ₽', photos: makePhotos('2osn', 5), cover: '/2os.jpg', desc: 'Усиленные двухосные платформы для тяжелых и габаритных грузов.' },
+  { id: 'p3', title: 'Одноосный прицеп с бортом', price: 'от 55 000 ₽', photos: makePhotos('1osnBEZ', 6), cover: '/photos/1osnBEZ/3.jpeg', desc: 'Одноосный прицеп с металлическими бортами без тента.' },
   { id: 'p4', title: 'Двухосный прицеп с бортом', price: 'от 70 000 ₽', photos: makePhotos('2osnBEZ', 7), desc: 'Двухосный прицеп с бортами без тента — для крупных грузов.' },
   { id: 'p5', title: 'Одноосный прицеп с тентом', price: 'от 65 000 ₽', photos: makePhotos('1osnTENT', 7), desc: 'Одноосный прицеп с тентом для защиты груза от непогоды.' },
   { id: 'p6', title: 'Двухосный прицеп с тентом', price: 'от 90 000 ₽', photos: makePhotos('2osnTENT', 5), desc: 'Двухосный тентованный прицеп для объемных и чувствительных грузов.' },
@@ -435,7 +435,7 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
 
 const ProductCard: React.FC<{ product: any, index: number }> = ({ product, index }) => {
   const [open, setOpen] = useState(false);
-  const coverPhoto = product.photos?.[0] || product.image;
+  const coverPhoto = product.cover || product.photos?.[0] || product.image;
 
   return (
     <>
