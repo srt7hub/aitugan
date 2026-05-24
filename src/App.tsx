@@ -587,19 +587,19 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
           <img
             src={photos[current]}
             alt={`${product.title} ${current + 1}`}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain md:object-cover"
             draggable={false}
           />
-          {/* Close button */}
+          {/* Close button — mobile only (desktop has it in the right panel) */}
           <button
             onClick={onClose}
-            className="absolute top-3 right-3 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors border border-white/20 z-10"
+            className="md:hidden absolute top-3 right-3 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors border border-white/20 z-10"
             aria-label="Закрыть"
           >
             <X size={22} />
           </button>
-          {/* Desktop counter */}
-          <div className="hidden md:block absolute top-3 left-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
+          {/* Counter */}
+          <div className="absolute top-3 left-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
             {current + 1} / {total}
           </div>
           {total > 1 && (
