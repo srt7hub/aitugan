@@ -499,56 +499,116 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
     touchStartX.current = null;
   };
 
-  return (
-    <div className="fixed inset-0 z-[100] bg-black flex flex-col" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      {/* Header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 bg-black border-b border-white/10">
-        <div className="flex-1 min-w-0 mr-3">
-          <h3 className="text-white font-bold text-base leading-tight truncate">{product.title}</h3>
-          {product.price && <span className="text-blue-400 text-sm font-semibold">{product.price}</span>}
-        </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-gray-400 text-sm">{current + 1} / {total}</span>
-        </div>
+  /* ── Info panel (shared between mobile bottom and desktop right) ── */
+  const InfoPanel = () => (
+    <div className="flex flex-col h-full">
+      {/* Header inside panel (desktop only) */}
+      <div className="hidden md:block px-6 pt-5 pb-4 border-b border-white/10 flex-shrink-0">
+        <h3 className="text-white font-bold text-xl leading-tight">{product.title}</h3>
+        {product.price && <span className="text-blue-400 text-sm font-semibold">{product.price}</span>}
       </div>
 
-      {/* Main image — fills all available space, swipeable */}
-      <div
-        className="relative flex-1 min-h-0 bg-black select-none"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        <img
-          src={photos[current]}
-          alt={`${product.title} ${current + 1}`}
-          className="w-full h-full object-contain"
-          draggable={false}
-        />
-        {/* Floating close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors border border-white/20 z-10"
-          aria-label="Закрыть"
-        >
-          <X size={22} />
-        </button>
-        {total > 1 && (
-          <>
-            <button onClick={() => setCurrent(c => (c - 1 + total) % total)} className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors">
-              <ChevronRight size={24} className="rotate-180" />
-            </button>
-            <button onClick={() => setCurrent(c => (c + 1) % total)} className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors">
-              <ChevronRight size={24} />
-            </button>
-          </>
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-5">
+        <p className="text-gray-400 text-sm leading-relaxed">{product.desc}</p>
+
+        {product.note && (
+          <p className="text-yellow-400/80 text-xs leading-relaxed">{product.note}</p>
+        )}
+
+        {product.sizes && (
+          <div>
+            <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Размеры и цены</div>
+            <div className="grid grid-cols-2 gap-x-4">
+              <div className="text-gray-600 text-xs pb-1 border-b border-white/5">Размер (м)</div>
+              <div className="text-gray-600 text-xs pb-1 border-b border-white/5">Цена</div>
+              {product.sizes.map((row: { size: string; price: string }, i: number) => (
+                <React.Fragment key={i}>
+                  <div className="text-white text-sm font-mono py-1.5 border-b border-white/5">{row.size}</div>
+                  <div className="text-blue-400 text-sm font-semibold py-1.5 border-b border-white/5">{row.price}</div>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {product.included && (
+          <div>
+            <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Комплектация</div>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+              {product.included.map((item: string, i: number) => (
+                <div key={i} className="flex items-center gap-1.5 text-gray-300 text-xs">
+                  <div className="w-1 h-1 rounded-full bg-blue-500 flex-shrink-0" />
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
 
-      {/* Bottom panel */}
-      <div className="flex-shrink-0 bg-black/90 backdrop-blur-sm border-t border-white/10">
+      {/* CTA */}
+      <div className="flex-shrink-0 px-4 md:px-6 py-4 border-t border-white/10">
+        <a href="#contact" onClick={onClose} className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-colors">
+          Оставить заявку <ArrowRight size={15} />
+        </a>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-black flex flex-col md:flex-row" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+
+      {/* ── LEFT / TOP: photo area ── */}
+      <div className="flex flex-col flex-1 min-h-0 min-w-0">
+        {/* Mobile header */}
+        <div className="md:hidden flex-shrink-0 flex items-center justify-between px-4 py-3 bg-black border-b border-white/10">
+          <div className="flex-1 min-w-0 mr-3">
+            <h3 className="text-white font-bold text-base leading-tight truncate">{product.title}</h3>
+            {product.price && <span className="text-blue-400 text-sm font-semibold">{product.price}</span>}
+          </div>
+          <span className="text-gray-400 text-sm flex-shrink-0">{current + 1} / {total}</span>
+        </div>
+
+        {/* Main image */}
+        <div
+          className="relative flex-1 min-h-0 bg-black select-none"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <img
+            src={photos[current]}
+            alt={`${product.title} ${current + 1}`}
+            className="w-full h-full object-contain"
+            draggable={false}
+          />
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors border border-white/20 z-10"
+            aria-label="Закрыть"
+          >
+            <X size={22} />
+          </button>
+          {/* Desktop counter */}
+          <div className="hidden md:block absolute top-3 left-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
+            {current + 1} / {total}
+          </div>
+          {total > 1 && (
+            <>
+              <button onClick={() => setCurrent(c => (c - 1 + total) % total)} className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors">
+                <ChevronRight size={24} className="rotate-180" />
+              </button>
+              <button onClick={() => setCurrent(c => (c + 1) % total)} className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/90 flex items-center justify-center text-white transition-colors">
+                <ChevronRight size={24} />
+              </button>
+            </>
+          )}
+        </div>
+
         {/* Thumbnails */}
         {total > 1 && (
-          <div className="flex gap-2 px-4 pt-3 overflow-x-auto">
+          <div className="flex-shrink-0 flex gap-2 px-4 py-3 overflow-x-auto bg-black border-t border-white/10">
             {photos.map((src, i) => (
               <button key={i} onClick={() => setCurrent(i)} className={`flex-shrink-0 w-14 h-10 rounded-lg overflow-hidden border-2 transition-all ${i === current ? 'border-blue-500 opacity-100' : 'border-transparent opacity-40 hover:opacity-70'}`}>
                 <img src={src} alt="" className="w-full h-full object-cover" />
@@ -556,55 +616,16 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
             ))}
           </div>
         )}
-        {/* Scrollable info block */}
-        <div className="overflow-y-auto max-h-[38vh] px-4 pt-3 pb-1 space-y-4">
-          {/* Description */}
-          <p className="text-gray-400 text-sm leading-relaxed">{product.desc}</p>
 
-          {/* Note */}
-          {product.note && (
-            <p className="text-yellow-400/80 text-xs leading-relaxed">{product.note}</p>
-          )}
-
-          {/* Sizes table */}
-          {product.sizes && (
-            <div>
-              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Размеры и цены</div>
-              <div className="grid grid-cols-2 gap-x-4">
-                <div className="text-gray-600 text-xs pb-1 border-b border-white/5">Размер (м)</div>
-                <div className="text-gray-600 text-xs pb-1 border-b border-white/5">Цена</div>
-                {product.sizes.map((row: { size: string; price: string }, i: number) => (
-                  <React.Fragment key={i}>
-                    <div className="text-white text-sm font-mono py-1.5 border-b border-white/5">{row.size}</div>
-                    <div className="text-blue-400 text-sm font-semibold py-1.5 border-b border-white/5">{row.price}</div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Included */}
-          {product.included && (
-            <div>
-              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Комплектация</div>
-              <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                {product.included.map((item: string, i: number) => (
-                  <div key={i} className="flex items-center gap-1.5 text-gray-300 text-xs">
-                    <div className="w-1 h-1 rounded-full bg-blue-500 flex-shrink-0" />
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        {/* Mobile info panel */}
+        <div className="md:hidden flex-shrink-0 max-h-[40vh] bg-black border-t border-white/10 overflow-hidden flex flex-col">
+          <InfoPanel />
         </div>
+      </div>
 
-        {/* CTA */}
-        <div className="flex items-center justify-end px-4 py-3 border-t border-white/10">
-          <a href="#contact" onClick={onClose} className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-colors">
-            Оставить заявку <ArrowRight size={15} />
-          </a>
-        </div>
+      {/* ── RIGHT: info panel (desktop only) ── */}
+      <div className="hidden md:flex flex-col w-[360px] flex-shrink-0 bg-[#0a0f1c] border-l border-white/10">
+        <InfoPanel />
       </div>
     </div>
   );
