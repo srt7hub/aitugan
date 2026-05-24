@@ -785,77 +785,123 @@ const Products = () => {
   );
 };
 
-const TestimonialsBlock = () => {
-  const testimonials = [
-    {
-      quote:
-        "Надежный фургон с прочной конструкцией. Отлично подходит для наших логистических задач. Учли все нестандартные размеры, оборудование встало идеально.",
-      name: "Частный заказчик",
-      designation: "Коммерческий фургон",
-      src: "/furhon.MOV.mp4",
-      type: "video" as const,
-    },
-    {
-      quote:
-        "Заказывали платформу для перевозки ульев. Платформа устойчивая, продумана система креплений, что критически важно в нашем деле. Спасибо за работу!",
-      name: "Частный заказчик",
-      designation: "Пчеловоз",
-      src: "/pchelovoz.MOV.mp4",
-      type: "video" as const,
-    },
-    {
-      quote:
-        "Отличный классический прицеп для повседневных задач. Металл крепкий, антикоррозийная обработка на уровне. Используем ежедневно больше года.",
-      name: "Частный заказчик",
-      designation: "Бортовой прицеп 2,5x1,3",
-      src: "/pri2.5x1.3.MOV.mp4",
-      type: "video" as const,
-    },
-    {
-      quote:
-        "Разработали специализированный скотовоз для нашей фермы. Откидные трапы, прочные борта, отличная вентиляция. Животные перевозятся без лишнего стресса.",
-      name: "Частный заказчик",
-      designation: "Скотовоз",
-      src: "/skot.MOV.mp4",
-      type: "video" as const,
-    },
-  ];
+const reviews = [
+  {
+    name: "Марсель",
+    product: "Прицеп новый 2×1.3",
+    date: "9 апреля 2025",
+    text: "Долго искал прицеп, в магазинах не могли предложить под мои параметры. Ребята молодцы — в кратчайшие сроки изготовили прицеп. Всем рекомендую. Качество отличное!",
+    initials: "М",
+    color: "bg-blue-600",
+  },
+  {
+    name: "Равиль Тактаев",
+    product: "Прицеп платформа 3×1.5 м",
+    date: "4 февраля 2025",
+    text: "Приобрёл прицеп платформу. Качество платформы и обслуживания отличное! На все мои вопросы ответы получил. Всё чётко и быстро! Рекомендую.",
+    initials: "Р",
+    color: "bg-emerald-600",
+  },
+  {
+    name: "Зиля К.",
+    product: "Двухосный прицеп 3×1.5",
+    date: "2 февраля 2025",
+    text: "Очень доволен покупкой. Качество выше, чем у большинства серийных прицепов. Исполнение оперативное, общение по делу, без воды.",
+    initials: "З",
+    color: "bg-violet-600",
+  },
+  {
+    name: "Иван",
+    product: "Прицеп платформа 2.5×1.3",
+    date: "24 февраля 2025",
+    text: "Продавец очень хороший. Качественно и быстро сделали прицеп. Можно договориться о любом нужном варианте. Ставлю пять звёзд.",
+    initials: "И",
+    color: "bg-orange-500",
+  },
+  {
+    name: "Ильдар",
+    product: "Платформа двухосная 2.5×1.5",
+    date: "4 марта 2025",
+    text: "Приобрёл прицеп-платформу, доволен покупкой. Качество на уровне, всё сделано аккуратно и в срок.",
+    initials: "И",
+    color: "bg-sky-600",
+  },
+  {
+    name: "Павел",
+    product: "Двухосный прицеп 3×1.5",
+    date: "4 марта 2025",
+    text: "Рекомендую — прицеп хороший и продавец молодец. Всё чётко, без лишних слов. Качество соответствует цене и даже выше.",
+    initials: "П",
+    color: "bg-rose-600",
+  },
+];
 
+const TestimonialsBlock = () => {
   return (
     <section id="testimonials" className="py-24 bg-[#0a0f1c] relative overflow-hidden border-t border-slate-800">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-900/10 to-transparent"></div>
-      </div>
-      
-      <div className="container mx-auto px-6 max-w-7xl relative z-10 mb-16">
-        <div className="inline-flex items-center text-xs font-mono tracking-widest uppercase mb-4 text-blue-500">
-          <span className="w-8 h-[1px] bg-blue-500 mr-4"></span>
-          Отзывы клиентов
-        </div>
-        <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
-          Доверие профессионалов
-        </h2>
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-900/10 to-transparent" />
       </div>
 
-      <div className="relative z-10 pb-12">
-        <CircularTestimonials
-          testimonials={testimonials}
-          autoplay={false}
-          colors={{
-            name: "#ffffff",
-            designation: "#64748b",
-            testimony: "#cbd5e1",
-            arrowBackground: "rgba(30, 41, 59, 0.5)",
-            arrowForeground: "#ffffff",
-            arrowHoverBackground: "#2563eb",
-          }}
-          fontSizes={{
-            name: "1.5rem",
-            designation: "0.875rem",
-            quote: "1.125rem",
-          }}
-        />
+      <div className="container mx-auto px-6 max-w-7xl relative z-10">
+        <div className="mb-14">
+          <div className="inline-flex items-center text-xs font-mono tracking-widest uppercase mb-4 text-blue-500">
+            <span className="w-8 h-[1px] bg-blue-500 mr-4" />
+            Отзывы клиентов
+          </div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white">
+              Что говорят покупатели
+            </h2>
+            <div className="flex items-center gap-3 text-sm text-gray-400">
+              <div className="flex">
+                {[1,2,3,4,5].map(i => (
+                  <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <span className="text-white font-bold text-lg">5.0</span>
+              <span>· 9 отзывов на Авито</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reviews.map((r, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              className="bg-white/5 border border-white/8 rounded-2xl p-6 flex flex-col gap-4 hover:bg-white/8 transition-colors"
+            >
+              {/* Stars */}
+              <div className="flex gap-0.5">
+                {[1,2,3,4,5].map(s => (
+                  <svg key={s} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+
+              {/* Text */}
+              <p className="text-gray-300 text-sm leading-relaxed flex-1">«{r.text}»</p>
+
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-2 border-t border-white/10">
+                <div className={`w-9 h-9 rounded-full ${r.color} flex items-center justify-center text-white text-sm font-bold flex-shrink-0`}>
+                  {r.initials}
+                </div>
+                <div>
+                  <div className="text-white text-sm font-semibold">{r.name}</div>
+                  <div className="text-gray-500 text-xs">{r.product} · {r.date}</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
