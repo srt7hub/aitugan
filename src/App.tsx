@@ -146,9 +146,12 @@ const serialProducts = [
     ],
   },
   {
-    id: 'p9', title: 'Фургон двухосный', price: 'от 200 000 ₽',
+    id: 'p9', title: 'Фургон двухосный', price: '238 000 ₽',
     photos: makePhotos('furgon', 10),
-    desc: 'Закрытый двухосный фургон для безопасной перевозки ценных грузов. Цена уточняется по запросу.',
+    desc: 'Закрытый двухосный фургон для безопасной перевозки ценных грузов.',
+    sizes: [
+      { size: 'Стандарт', price: '238 000 ₽' },
+    ],
     included: ['Документы для ГИБДД', 'Окрашенная рама', 'Кузов фургон', 'Рессоры', 'Ось', 'Ступицы', 'Полная электрика', 'Замок фаркопа'],
   },
   {
@@ -503,9 +506,14 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
   const InfoPanel = () => (
     <div className="flex flex-col h-full">
       {/* Header inside panel (desktop only) */}
-      <div className="hidden md:block px-6 pt-5 pb-4 border-b border-white/10 flex-shrink-0">
-        <h3 className="text-white font-bold text-xl leading-tight">{product.title}</h3>
-        {product.price && <span className="text-blue-400 text-sm font-semibold">{product.price}</span>}
+      <div className="hidden md:flex items-start justify-between px-6 pt-5 pb-4 border-b border-white/10 flex-shrink-0 gap-3">
+        <div>
+          <h3 className="text-white font-bold text-xl leading-tight">{product.title}</h3>
+          {product.price && <span className="text-blue-400 text-sm font-semibold">{product.price}</span>}
+        </div>
+        <button onClick={onClose} className="flex-shrink-0 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors border border-white/20" aria-label="Закрыть">
+          <X size={18} />
+        </button>
       </div>
 
       {/* Scrollable content */}
