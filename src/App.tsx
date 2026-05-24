@@ -25,8 +25,26 @@ const makePhotos = (folder: string, count: number) =>
   Array.from({ length: count }, (_, i) => `/photos/${folder}/${i + 1}.jpeg`);
 
 const serialProducts = [
-  { id: 'p1', title: 'Платформы одноосные', price: 'от 43 000 ₽', photos: makePhotos('1osn', 6), cover: '/1os.jpg', desc: 'Базовые одноосные платформы для перевозки легких грузов.' },
-  { id: 'p2', title: 'Платформы двухосные', price: 'от 75 000 ₽', photos: makePhotos('2osn', 5), cover: '/2os.jpg', desc: 'Усиленные двухосные платформы для тяжелых и габаритных грузов.' },
+  { id: 'p1', title: 'Платформы одноосные', price: 'от 43 000 ₽', photos: makePhotos('1osn', 6), cover: '/1os.jpg', desc: 'Базовые одноосные платформы для перевозки легких грузов.',
+    sizes: [
+      { size: '2×1.3', price: '43 000 ₽' },
+      { size: '2.5×1.3', price: '46 000 ₽' },
+      { size: '2.5×1.5', price: '47 000 ₽' },
+      { size: '3×1.5', price: '57 000 ₽' },
+      { size: '3.5×1.5', price: '58 000 ₽' },
+      { size: '4×1.5', price: '68 000 ₽' },
+    ]
+  },
+  { id: 'p2', title: 'Платформы двухосные', price: 'от 58 000 ₽', photos: makePhotos('2osn', 5), cover: '/2os.jpg', desc: 'Усиленные двухосные платформы для тяжелых и габаритных грузов.',
+    sizes: [
+      { size: '2×1.3', price: '58 000 ₽' },
+      { size: '2.5×1.3', price: '61 000 ₽' },
+      { size: '2.5×1.5', price: '62 000 ₽' },
+      { size: '3×1.5', price: '71 000 ₽' },
+      { size: '3.5×1.5', price: '72 000 ₽' },
+      { size: '4×1.5', price: '80 000 ₽' },
+    ]
+  },
   { id: 'p3', title: 'Одноосный прицеп с бортом', price: 'от 55 000 ₽', photos: makePhotos('1osnBEZ', 6), cover: '/photos/1osnBEZ/3.jpeg', desc: 'Одноосный прицеп с металлическими бортами без тента.' },
   { id: 'p4', title: 'Двухосный прицеп с бортом', price: 'от 70 000 ₽', photos: makePhotos('2osnBEZ', 7), desc: 'Двухосный прицеп с бортами без тента — для крупных грузов.' },
   { id: 'p5', title: 'Одноосный прицеп с тентом', price: 'от 65 000 ₽', photos: makePhotos('1osnTENT', 7), desc: 'Одноосный прицеп с тентом для защиты груза от непогоды.' },
@@ -34,7 +52,11 @@ const serialProducts = [
   { id: 'p7', title: 'Платформа с подрамником', price: 'от 120 000 ₽', photos: makePhotos('2osnPODRAMNIK', 7), desc: 'Усиленная двухосная платформа с подрамником — для пчеловозов, автовозов и спецтехники.' },
   { id: 'p8', title: 'Длинномер 5×2', price: 'от 150 000 ₽', photos: makePhotos('dlina5x2', 7), desc: 'Прицеп-длинномер 5×2 м, усиленный с подрамником для крупногабаритных грузов.' },
   { id: 'p9', title: 'Фургон двухосный', price: 'от 200 000 ₽', photos: makePhotos('furgon', 10), desc: 'Закрытый двухосный фургон для безопасной перевозки ценных грузов.' },
-  { id: 'p10', title: 'Прицеп-коневоз', price: 'от 350 000 ₽', photos: makePhotos('kovnevos', 7), desc: 'Специализированный прицеп для безопасной перевозки лошадей.' },
+  { id: 'p10', title: 'Прицеп-коневоз', price: 'от 160 000 ₽', photos: makePhotos('kovnevos', 7), desc: 'Специализированный прицеп для безопасной перевозки лошадей.',
+    sizes: [
+      { size: '2.4×1.2', price: '160 000 ₽' },
+    ]
+  },
   { id: 'p11', title: 'Подкат', price: 'от 85 000 ₽', photos: makePhotos('podkat', 5), desc: 'Подкатная тележка для частичной погрузки и эвакуации автомобиля.' },
 ];
 
@@ -419,6 +441,21 @@ const PhotoSliderModal: React.FC<{ product: any, onClose: () => void }> = ({ pro
                 <img src={src} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
+          </div>
+        )}
+        {/* Sizes table */}
+        {product.sizes && (
+          <div className="px-4 pt-3 pb-1">
+            <div className="grid grid-cols-3 gap-x-2 gap-y-1">
+              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider col-span-1">Размер (м)</div>
+              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider col-span-2">Цена</div>
+              {product.sizes.map((row: { size: string; price: string }, i: number) => (
+                <React.Fragment key={i}>
+                  <div className="text-white text-sm font-mono py-1 border-t border-white/5">{row.size}</div>
+                  <div className="text-blue-400 text-sm font-semibold py-1 border-t border-white/5 col-span-2">{row.price}</div>
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         )}
         {/* Description + CTA */}
